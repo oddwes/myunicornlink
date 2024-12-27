@@ -41,6 +41,10 @@ const MyLinkDetails = () => {
     return icon;
   };
 
+  const prettifyLink = (url) => {
+    return parse(url)?.hostname?.replace("www.", "") || url
+  }
+
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     setCommunityLogo(file ? URL.createObjectURL(file) : null);
@@ -156,7 +160,7 @@ const MyLinkDetails = () => {
                       className="flex-grow p-2 border rounded-md bg-white"
                     />
                   ) : (
-                    <p className="text-gray-800">{parse(link.url).hostname}</p>
+                    <p className="text-gray-800">{prettifyLink(link.url)}</p>
                   )}
                 </div>
                 <div className="flex items-center space-x-2">
@@ -205,18 +209,28 @@ const MyLinkDetails = () => {
               <h1 className="text-2xl font-bold mt-2" style={{ color: primaryColor }}>{communityName}</h1>
               <p className="text-sm" style={{ color: primaryColor }}>{description}</p>
               <div className="flex justify-center mt-4 space-x-4">
-                {communityLinks.map((link) => (
-                  <a
-                    key={link.id}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-600"
-                    style={{ color: primaryColor }}
-                  >
-                    {getLinkIcon(link.url)}
-                  </a>
-                ))}
+                <div className="grid grid-cols-3 gap-4">
+                  {communityLinks.map((link) => (
+                    <a
+                      key={link.id}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600"
+                      style={{ color: primaryColor }}
+                    >
+                      <div
+                        key={link.id}
+                        className="flex items-center justify-between p-3 bg-white rounded-lg mb-2"
+                      >
+                        <div className="flex items-center space-x-2 flex-grow">
+                          {getLinkIcon(link.url)}
+                          <p className="text-gray-800 w-full block">{prettifyLink(link.url)}</p>
+                        </div>
+                      </div>
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
