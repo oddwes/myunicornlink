@@ -8,33 +8,27 @@ import { PiGlobe } from "react-icons/pi";
 import { FaLinkedin } from "react-icons/fa";
 import { TwitterPicker } from "react-color";
 import { IoMdInformationCircleOutline } from "react-icons/io";
+import { SiFarcaster } from "react-icons/si";
 
 const MyLinkDetails = () => {
+  const urlIconMapping = [
+    { url: "discord.com", icon: <IoLogoDiscord /> },
+    { url: "x.com", icon: <FaXTwitter /> },
+    { url: "linkedin.com", icon: <FaLinkedin /> },
+    { url: "farcaster.com", icon: <SiFarcaster /> },
+  ];
+
   const [communityName, setCommunityName] = useState("Ser Foobar");
   const [description, setDescription] = useState("Foobullish on the Future of Web3");
   const [primaryColor, setPrimaryColor] = useState("#3C65E5");
   const [communityLogo, setCommunityLogo] = useState(null);
   const [communityLinks, setCommunityLinks] = useState([
-    { id: 1, url: "https://discord.com/foobar", isEditing: false, icon: <IoLogoDiscord /> },
-    { id: 2, url: "https://x.com/foobar", isEditing: false, icon: <FaXTwitter /> },
-    { id: 3, url: "https://foobar.io", isEditing: false, icon: <PiGlobe /> },
+    { id: 1, url: "https://discord.com/foobar", isEditing: false },
+    { id: 2, url: "https://x.com/foobar", isEditing: false },
+    { id: 3, url: "https://foobar.io", isEditing: false },
   ]);
 
   const getLinkIcon = (url) => {
-    const urlIconMapping = [
-      {
-        url: "discord.com",
-        icon: <IoLogoDiscord />,
-      },
-      {
-        url: "x.com",
-        icon: <FaXTwitter />,
-      },
-      {
-        url: "linkedin.com",
-        icon: <FaLinkedin />,
-      },
-    ];
     let icon = <PiGlobe />;
     for (let mapping of urlIconMapping) {
       if (url.includes(mapping.url)) {
