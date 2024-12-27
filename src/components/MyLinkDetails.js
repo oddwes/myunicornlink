@@ -9,6 +9,7 @@ import { FaLinkedin } from "react-icons/fa";
 import { TwitterPicker } from "react-color";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { SiFarcaster } from "react-icons/si";
+import { parse } from "urlite"
 
 const MyLinkDetails = () => {
   const urlIconMapping = [
@@ -155,7 +156,7 @@ const MyLinkDetails = () => {
                       className="flex-grow p-2 border rounded-md bg-white"
                     />
                   ) : (
-                    <p className="text-gray-800">{link.url}</p>
+                    <p className="text-gray-800">{parse(link.url).hostname}</p>
                   )}
                 </div>
                 <div className="flex items-center space-x-2">
