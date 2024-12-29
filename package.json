@@ -1,5 +1,5 @@
 {
-  "name": "myunicornlink",
+  "name": "mmyunicornlink",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,19 +9,32 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@helia/unixfs": "^4.0.1",
+    "adm-zip": "^0.5.16",
+    "axios": "^1.7.9",
+    "formidable": "^3.5.2",
+    "helia": "^5.1.1",
+    "ipfs-http-client": "^60.0.1",
+    "jsdom": "^25.0.1",
+    "kubo-rpc-client": "^5.0.2",
+    "libp2p": "^2.4.2",
+    "next": "15.1.3",
+    "puppeteer": "^23.11.1",
     "react": "^19.0.0",
+    "react-color": "^2.19.3",
     "react-dom": "^19.0.0",
-    "next": "15.1.3"
+    "react-icons": "^5.4.0",
+    "urlite": "^3.1.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
     "eslint": "^9",
     "eslint-config-next": "15.1.3",
-    "@eslint/eslintrc": "^3"
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }
