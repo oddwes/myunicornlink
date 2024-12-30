@@ -20,7 +20,7 @@ export const getLinkIcon = (url) => {
   if(validate(url)) {
     icon = <HiOutlineMail />
   } else {
-    for (let mapping of urlIconMapping) {
+    for (const mapping of urlIconMapping) {
       if (url.includes(mapping.url)) {
         icon = mapping.icon;
         break;

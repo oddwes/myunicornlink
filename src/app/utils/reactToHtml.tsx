@@ -14,7 +14,7 @@ const inlineStyles = async (page: Page) => {
           const rules = Array.from(styleSheet.cssRules);
           return rules.map((rule) => rule.cssText).join('\n');
         } catch (error) {
-          console.warn('Cannot access CSS rules:', styleSheet.href);
+          console.warn('Cannot access CSS rules:', error);
           return '';
         }
       })
