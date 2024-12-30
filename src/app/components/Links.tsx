@@ -4,6 +4,8 @@ import { PiGlobe } from "react-icons/pi";
 import { FaLinkedin } from "react-icons/fa";
 import { SiFarcaster } from "react-icons/si";
 import { parse } from "urlite";
+import { HiOutlineMail } from "react-icons/hi";
+import { validate } from "email-validator";
 
 const urlIconMapping = [
   { url: "discord.com", icon: <IoLogoDiscord /> },
@@ -14,10 +16,15 @@ const urlIconMapping = [
 
 export const getLinkIcon = (url) => {
   let icon = <PiGlobe />;
-  for (let mapping of urlIconMapping) {
-    if (url.includes(mapping.url)) {
-      icon = mapping.icon;
-      break;
+
+  if(validate(url)) {
+    icon = <HiOutlineMail />
+  } else {
+    for (let mapping of urlIconMapping) {
+      if (url.includes(mapping.url)) {
+        icon = mapping.icon;
+        break;
+      }
     }
   }
 

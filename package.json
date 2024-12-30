@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^1.7.9",
+    "email-validator": "^2.0.4",
     "formidable": "^3.5.2",
     "kubo-rpc-client": "^5.0.2",
     "next": "15.1.3",
