@@ -7,15 +7,15 @@ import { FiCheck, FiPlus } from "react-icons/fi";
 import { TwitterPicker } from "react-color";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { getLinkIcon, prettifyLink } from "./components/Links";
-import { Preview } from "./components/Preview";
+import { CommunityLinksInterface, Preview } from "./components/Preview";
 
 export default function Home() {
   const [communityName, setCommunityName] = useState<string>("Burlin");
   const [description, setDescription] = useState<string>("Foobullish on the Future of Web3");
   const [primaryColor, setPrimaryColor] = useState<string>("#3C65E5");
-  const [communityLogo, setCommunityLogo] = useState<string|null>(null);
-  const [preview, setPreview] = useState<string|ArrayBuffer|null>(null); // Image preview URL
-  const [communityLinks, setCommunityLinks] = useState([
+  const [communityLogo, setCommunityLogo] = useState<File|null>(null);
+  const [preview, setPreview] = useState<string|null|undefined>(null); // Image preview URL
+  const [communityLinks, setCommunityLinks] = useState<CommunityLinksInterface[]>([
     { id: 1, url: "https://discord.com/foobar", isEditing: false },
     { id: 2, url: "https://x.com/foobar", isEditing: false },
     { id: 3, url: "https://foobar.io", isEditing: false },
@@ -23,17 +23,21 @@ export default function Home() {
   const [loading, setUploading] = useState<boolean>(false)
   const [cid, setCid] = useState<string|null>(null)
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setCommunityLogo(file);
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(e.target.files) {
+      const file = e.target.files[0];
+      if (file) {
+        setCommunityLogo(file);
 
-      // Generate a preview URL
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+        // Generate a preview URL
+        const reader = new FileReader();
+        reader.onload = () => {
+          setPreview(reader.result?.toString());
+        };
+        reader.readAsDataURL(file);
+      }
+    } else {
+      alert('Error uploading image')
     }
   };
 
@@ -59,7 +63,7 @@ export default function Home() {
     setCommunityLinks(communityLinks.filter((link) => link.id !== id));
   };
 
-  const handleSave = async (e) => {
+  const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setUploading(true)
     setCid(null)
@@ -232,10 +236,10 @@ export default function Home() {
             <p>Your community real look</p>
           </div>
           <Preview
-            communityLogo={preview}
-            primaryColor={primaryColor}
             communityName={communityName}
             description={description}
+            primaryColor={primaryColor}
+            communityLogo={preview}
             communityLinks={communityLinks}
           />
         </div>

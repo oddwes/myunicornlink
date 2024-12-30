@@ -39,7 +39,7 @@ const downloadImages = async (page: Page, downloadDir: string) => {
     }));
   });
 
-  const localImagePaths = {};
+  const localImagePaths: Record<string, string> = {};
 
   await Promise.all(
     images.map(async (img, index) => {

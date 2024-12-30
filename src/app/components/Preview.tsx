@@ -1,11 +1,23 @@
 import { getLinkIcon, prettifyLink } from "./Links"
 
+export interface CommunityLinksInterface {
+  id: number
+  url: string
+  isEditing: boolean
+}
+
 export const Preview = ({
   communityName,
   description,
   primaryColor,
   communityLogo,
   communityLinks
+} : {
+  communityName: string,
+  description: string,
+  primaryColor: string,
+  communityLogo: string | null | undefined,
+  communityLinks: CommunityLinksInterface[]
 }) => {
   return (
     <div

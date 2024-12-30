@@ -14,7 +14,7 @@ const urlIconMapping = [
   { url: "farcaster.com", icon: <SiFarcaster /> },
 ];
 
-export const getLinkIcon = (url) => {
+export const getLinkIcon = (url: string) => {
   let icon = <PiGlobe />;
 
   if(validate(url)) {
@@ -31,6 +31,6 @@ export const getLinkIcon = (url) => {
   return icon;
 };
 
-export const prettifyLink = (url) => {
+export const prettifyLink = (url: string) => {
   return parse(url)?.hostname?.replace("www.", "") || url
 }

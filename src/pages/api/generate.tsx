@@ -11,16 +11,13 @@ export const config = {
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const form = new IncomingForm(); // Use `IncomingForm` from `formidable`
     const dataDir = path.join(process.cwd(), "data");
     const imagesDir = path.join(process.cwd(), "public", "uploads");
+    const form = new IncomingForm({ uploadDir: imagesDir, keepExtensions: true});
 
     // Ensure directories exist
     if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
     if (!fs.existsSync(imagesDir)) fs.mkdirSync(imagesDir, { recursive: true });
-
-    form.uploadDir = imagesDir; // Save uploaded files in the `public/uploads` directory
-    form.keepExtensions = true; // Keep file extensions
 
     form.parse(req, async (err, fields, files) => {
       if (err) {
@@ -28,14 +25,20 @@ export default async function handler(req, res) {
         return res.status(500).json({ message: "Error processing upload" });
       }
       const { communityName, description, primaryColor, communityLinks } = fields;
+      if (!communityName) {
+        return res.status(400).json({ message: "Community Name cannot be empty" });
+      }
       const sanitizedCommunityName = communityName[0].replace(/[^a-zA-Z0-9-_]/g, "");
       if (!sanitizedCommunityName) {
         return res.status(400).json({ message: "Invalid communityName" });
       }
       const slug = sanitizedCommunityName.toLowerCase()
 
-      const uploadedFile = files.communityLogo[0];
-      const imageUrl = uploadedFile ? `/uploads/${path.basename(uploadedFile.filepath)}` : null;
+      let imageUrl
+      if(files.communityLogo) {
+        const uploadedFile = files.communityLogo[0];
+        imageUrl = uploadedFile ? `/uploads/${path.basename(uploadedFile.filepath)}` : null;
+      }
 
       // Save the communityName and image URL to a JSON file
       const filePath = path.join(dataDir, `${slug}.json`);

@@ -1,4 +1,4 @@
-import { create, globSource } from 'kubo-rpc-client';
+import { CID, create, globSource } from 'kubo-rpc-client';
 
 export const addDirectoryToIPFS = async (directoryPath: string) => {
   const ipfs = create({ url: 'http://127.0.0.1:5001/api/v0' });
@@ -9,7 +9,7 @@ export const addDirectoryToIPFS = async (directoryPath: string) => {
   };
 
   console.log(`Adding directory "${directoryPath}" to IPFS...`);
-  const imported = []
+  const imported: CID[] = []
   // Use globSource to recursively fetch all files from the directory
   for await (const file of ipfs.addAll(globSource(directoryPath, '**/*'), addOptions)) {
     imported.push(file.cid)
