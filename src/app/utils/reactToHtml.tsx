@@ -2,7 +2,7 @@ import puppeteer, { Page } from 'puppeteer';
 import fs from 'fs';
 import path from 'path';
 import axios from 'axios';
-import { addDirectoryToIPFS } from './ipfs';
+import { addDirectoryToIPFS } from './pinata';
 
 // Inline all CSS styles
 const inlineStyles = async (page: Page) => {

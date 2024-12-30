@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@pinata/sdk": "^2.1.0",
     "axios": "^1.7.9",
     "email-validator": "^2.0.4",
     "formidable": "^3.5.2",
