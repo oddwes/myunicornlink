@@ -11,7 +11,6 @@ import { getLinkIcon, prettifyLink } from "./components/Links";
 import { Preview } from "./components/Preview";
 
 export default function Home() {
-  const router = useRouter();
   const [communityName, setCommunityName] = useState("Burlin");
   const [description, setDescription] = useState("Foobullish on the Future of Web3");
   const [primaryColor, setPrimaryColor] = useState("#3C65E5");
@@ -22,7 +21,8 @@ export default function Home() {
     { id: 2, url: "https://x.com/foobar", isEditing: false },
     { id: 3, url: "https://foobar.io", isEditing: false },
   ]);
-  const [uploading, setUploading] = useState(false)
+  const [loading, setUploading] = useState(false)
+  const [cid, setCid] = useState()
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -62,6 +62,8 @@ export default function Home() {
 
   const handleSave = async (e) => {
     e.preventDefault();
+    setUploading(true)
+    setCid('')
 
     const formData = new FormData();
     formData.append("communityName", communityName.trim());
@@ -70,27 +72,18 @@ export default function Home() {
     if (communityLogo) formData.append("communityLogo", communityLogo);
     if (communityLinks) formData.append("communityLinks", JSON.stringify(communityLinks));
 
-    const response = await fetch("/api/generate", {
+    fetch("/api/generate", {
       method: "POST",
       body: formData,
-    });
-
-    const slug = communityName.trim().toLowerCase()
-    if (response.ok) {
-      try {
-        const response = await fetch(`/api/save_page/${encodeURIComponent(slug)}`);
-        if (response.ok) {
-        } else {
-          console.error('Failed to save the page');
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      alert("Failed to generate page.");
-    }
+    }).then((response) =>
+      response.json()
+    ).then((res) => {
+      setUploading(false)
+      setCid(res.cid)
+    }).catch((error) => {
+      console.error('Failed to save the page', error);
+    })
   };
-
 
   return (
     <div
@@ -99,21 +92,25 @@ export default function Home() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Add your MyUnicornLink details</h2>
         <div className="flex gap-2">
+          {cid && (
+            <a
+              target="_blank"
+              href={`https://ipfs.io/ipfs/${cid}`}
+              rel="noopener noreferrer"
+            >
+              <button
+                className="flex items-center px-4 py-2 border-2 text-sm rounded-md disabled:bg-gray-300"
+              >
+                {cid}
+              </button>
+            </a>
+          )}
           <button
-            disabled={!communityName}
             onClick={handleSave}
-            className="flex items-center px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 disabled:bg-gray-300"
+            disabled={!communityName || loading}
+            className="flex items-center px-4 py-2 bg-purple-500 text-white text-sm rounded-md hover:bg-purple-600 disabled:bg-gray-300"
           >
-            Save
-          </button>
-          <button
-            onClick={() => {}}
-            disabled={true}
-            // disabled={uploading}
-            className="flex items-center px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 disabled:bg-gray-300"
-          >
-            {uploading ? "Uploading..." : "Upload to IPFS"}
-            <FiCheck className="w-5 h-5 ml-2 text-white" />
+            {loading ? "Uploading..." : "Save and upload to IPFS"}
           </button>
         </div>
       </div>
