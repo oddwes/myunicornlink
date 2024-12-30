@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from "react";
-import { useRouter } from 'next/navigation'
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LuPencilLine } from "react-icons/lu";
 import { FiCheck, FiPlus } from "react-icons/fi";
@@ -11,18 +10,18 @@ import { getLinkIcon, prettifyLink } from "./components/Links";
 import { Preview } from "./components/Preview";
 
 export default function Home() {
-  const [communityName, setCommunityName] = useState("Burlin");
-  const [description, setDescription] = useState("Foobullish on the Future of Web3");
-  const [primaryColor, setPrimaryColor] = useState("#3C65E5");
-  const [communityLogo, setCommunityLogo] = useState(null);
-  const [preview, setPreview] = useState(null); // Image preview URL
+  const [communityName, setCommunityName] = useState<string>("Burlin");
+  const [description, setDescription] = useState<string>("Foobullish on the Future of Web3");
+  const [primaryColor, setPrimaryColor] = useState<string>("#3C65E5");
+  const [communityLogo, setCommunityLogo] = useState<string|null>(null);
+  const [preview, setPreview] = useState<string|ArrayBuffer|null>(null); // Image preview URL
   const [communityLinks, setCommunityLinks] = useState([
     { id: 1, url: "https://discord.com/foobar", isEditing: false },
     { id: 2, url: "https://x.com/foobar", isEditing: false },
     { id: 3, url: "https://foobar.io", isEditing: false },
   ]);
-  const [loading, setUploading] = useState(false)
-  const [cid, setCid] = useState()
+  const [loading, setUploading] = useState<boolean>(false)
+  const [cid, setCid] = useState<string|null>(null)
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -39,16 +38,16 @@ export default function Home() {
   };
 
   const handleAddLink = () => {
-    setCommunityLinks([...communityLinks, { id: Date.now(), url: "", isEditing: true, icon: null }]);
+    setCommunityLinks([...communityLinks, { id: Date.now(), url: "", isEditing: true }]);
   };
 
-  const handleUpdateLink = (id, newUrl) => {
+  const handleUpdateLink = (id: number, newUrl: string) => {
     setCommunityLinks(
       communityLinks.map((link) => (link.id === id ? { ...link, url: newUrl } : link))
     );
   };
 
-  const toggleEditMode = (id) => {
+  const toggleEditMode = (id: number) => {
     setCommunityLinks(
       communityLinks.map((link) =>
         link.id === id ? { ...link, isEditing: !link.isEditing } : link
@@ -56,14 +55,14 @@ export default function Home() {
     );
   };
 
-  const handleDeleteLink = (id) => {
+  const handleDeleteLink = (id: number) => {
     setCommunityLinks(communityLinks.filter((link) => link.id !== id));
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
     setUploading(true)
-    setCid('')
+    setCid(null)
 
     const formData = new FormData();
     formData.append("communityName", communityName.trim());
