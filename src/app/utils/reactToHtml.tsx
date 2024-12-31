@@ -72,7 +72,7 @@ const downloadImages = async (page: Page, downloadDir: string) => {
 };
 
 export const convertReactToHtml = async (slug: string, targetUrl: string) => {
-  const downloadDir = path.join('tmp', `data/output/${slug}`); // Directory to save images
+  const downloadDir = path.join('/tmp', `data/output/${slug}`); // Directory to save images
 
   try {
     // Create the download directory if it doesn't exist

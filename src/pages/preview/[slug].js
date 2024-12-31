@@ -5,7 +5,7 @@ import path from "path";
 import { Preview } from "../../app/components/Preview";
 
 export async function getStaticPaths() {
-  const dataDir = path.join('tmp', "data", "input");
+  const dataDir = path.join('/tmp', "data", "input");
   if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
   const files = fs.readdirSync(dataDir);
@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const filePath = path.join('tmp', "data", "input", `${params.slug}.json`);
+  const filePath = path.join('/tmp', "data", "input", `${params.slug}.json`);
 
   try {
     const fileContent = fs.readFileSync(filePath, "utf-8");
