@@ -71,14 +71,13 @@ const downloadImages = async (page: Page, downloadDir: string) => {
   }, localImagePaths);
 };
 
-export const convertReactToHtml = async (slug: string) => {
-  const targetUrl = `http://localhost:3000/preview/${slug}`; // Replace with your target route
-  const downloadDir = path.join(process.cwd(), `downloads/${slug}`); // Directory to save images
+export const convertReactToHtml = async (slug: string, targetUrl: string) => {
+  const downloadDir = path.join('tmp', `data/output/${slug}`); // Directory to save images
 
   try {
     // Create the download directory if it doesn't exist
     if (!fs.existsSync(downloadDir)) {
-      fs.mkdirSync(downloadDir);
+      fs.mkdirSync(downloadDir, { recursive: true });
     }
 
     // Launch Puppeteer

@@ -11,7 +11,7 @@ export const config = {
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const dataDir = path.join(process.cwd(), "data");
+    const dataDir = path.join('tmp', "data", "input");
     const imagesDir = path.join(process.cwd(), "public", "uploads");
     const form = new IncomingForm({ uploadDir: imagesDir, keepExtensions: true});
 
@@ -50,7 +50,9 @@ export default async function handler(req, res) {
         communityLinks,
       }));
 
-      const directoryCid = await convertReactToHtml(slug)
+      const protocol = req.headers["x-forwarded-proto"] || (req.connection.encrypted ? "https" : "http");
+      const domain = `${protocol}://${req.headers.host}`;
+      const directoryCid = await convertReactToHtml(slug, `${domain}/preview/${slug}`)
       res.status(200).json({ cid: directoryCid });
     });
   } else {
