@@ -7,32 +7,29 @@ import { FiCheck, FiPlus } from "react-icons/fi";
 import { TwitterPicker } from "react-color";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { getLinkIcon, prettifyLink } from "./components/Links";
-import { CommunityLinksInterface, Preview } from "./components/Preview";
+import { Preview } from "./components/Preview";
+import { CommunityLinksInterface } from "./interfaces/CommunityLinksInterface";
 
 export default function Home() {
   const [communityName, setCommunityName] = useState<string>("Burlin");
   const [description, setDescription] = useState<string>("Foobullish on the Future of Web3");
   const [primaryColor, setPrimaryColor] = useState<string>("#3C65E5");
-  const [communityLogo, setCommunityLogo] = useState<File|null>(null);
-  const [preview, setPreview] = useState<string|null|undefined>(null); // Image preview URL
+  const [communityLogo, setCommunityLogo] = useState<string|null>(null);
   const [communityLinks, setCommunityLinks] = useState<CommunityLinksInterface[]>([
     { id: 1, url: "https://discord.com/foobar", isEditing: false },
     { id: 2, url: "https://x.com/foobar", isEditing: false },
     { id: 3, url: "https://foobar.io", isEditing: false },
   ]);
-  const [loading, setUploading] = useState<boolean>(false)
+  const [uploading, setUploading] = useState<boolean>(false)
   const [cid, setCid] = useState<string|null>(null)
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if(e.target.files) {
       const file = e.target.files[0];
       if (file) {
-        setCommunityLogo(file);
-
-        // Generate a preview URL
         const reader = new FileReader();
         reader.onload = () => {
-          setPreview(reader.result?.toString());
+          setCommunityLogo(reader.result?.toString()||null);
         };
         reader.readAsDataURL(file);
       }
@@ -64,29 +61,41 @@ export default function Home() {
   };
 
   const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+    e.preventDefault()
     setUploading(true)
     setCid(null)
 
-    const formData = new FormData();
+    let formData = new FormData();
     formData.append("communityName", communityName.trim());
     if (description) formData.append("description", description);
     if (primaryColor) formData.append("primaryColor", primaryColor);
     if (communityLogo) formData.append("communityLogo", communityLogo);
     if (communityLinks) formData.append("communityLinks", JSON.stringify(communityLinks));
 
-    fetch("/api/generate", {
+    const response = await fetch("/api/save", {
       method: "POST",
       body: formData,
-    }).then((response) =>
-      response.json()
-    ).then((res) => {
-      setUploading(false)
-      setCid(res.cid)
-    }).catch((error) => {
-      console.error('Failed to save the page', error);
     })
-  };
+
+    if(response.ok) {
+      const slug = communityName
+        .replace(/[^a-zA-Z0-9-_]/g, '')
+        .toLowerCase();
+      formData = new FormData()
+      formData.append("slug", slug);
+      fetch("/api/generate", {
+        method: "POST",
+        body: formData,
+      }).then((response) =>
+        response.json()
+      ).then((res) => {
+        setUploading(false)
+        setCid(res.directoryCid)
+      }).catch((error) => {
+        console.error('Failed to save the page', error);
+      })
+    }
+  }
 
   return (
     <div
@@ -110,10 +119,10 @@ export default function Home() {
           )}
           <button
             onClick={handleSave}
-            disabled={!communityName || loading}
+            disabled={!communityName || uploading}
             className="flex items-center px-4 py-2 bg-purple-500 text-white text-sm rounded-md hover:bg-purple-600 disabled:bg-gray-300"
           >
-            {loading ? "Uploading..." : "Save and upload to IPFS"}
+            {uploading ? "Uploading..." : "Save and upload to IPFS"}
           </button>
         </div>
       </div>
@@ -149,7 +158,7 @@ export default function Home() {
 
           <div className="mb-6">
             <label className="block text-sm font-medium mb-2">Community logo</label>
-            {!preview ? (
+            {!communityLogo ? (
               <label
                 className="block w-full p-6 text-center border-2 border-dashed rounded-md bg-purple-50 text-purple-700 cursor-pointer hover:bg-purple-100"
               >
@@ -165,7 +174,7 @@ export default function Home() {
             ) : (
               <label className="relative cursor-pointer">
                 <img
-                  src={preview}
+                  src={communityLogo}
                   alt="Community Logo"
                   className="mt-2 w-32 h-32 object-cover rounded-md hover:opacity-80"
                 />
@@ -239,7 +248,7 @@ export default function Home() {
             communityName={communityName}
             description={description}
             primaryColor={primaryColor}
-            communityLogo={preview}
+            communityLogo={communityLogo}
             communityLinks={communityLinks}
           />
         </div>

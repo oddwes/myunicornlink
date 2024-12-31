@@ -2,7 +2,6 @@ import puppeteer, { Page } from 'puppeteer';
 import fs from 'fs';
 import path from 'path';
 import axios from 'axios';
-import { addDirectoryToIPFS } from './pinata';
 
 // Inline all CSS styles
 const inlineStyles = async (page: Page) => {
@@ -72,7 +71,8 @@ const downloadImages = async (page: Page, downloadDir: string) => {
 };
 
 export const convertReactToHtml = async (slug: string, targetUrl: string) => {
-  const downloadDir = path.join('/tmp', `data/output/${slug}`); // Directory to save images
+  const data_dir_root = process.env.DATA_DIR_ROOT || 'tmp'
+  const downloadDir = path.join(data_dir_root, `data/output/${slug}`); // Directory to save images
 
   try {
     // Create the download directory if it doesn't exist
@@ -97,8 +97,8 @@ export const convertReactToHtml = async (slug: string, targetUrl: string) => {
 
     // Close Puppeteer
     await browser.close();
-    const directoryCid = await addDirectoryToIPFS(downloadDir)
-    return directoryCid
+
+    return downloadDir
   } catch (error) {
     console.error('Error generating self-contained HTML:', error);
   }

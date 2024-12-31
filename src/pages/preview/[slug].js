@@ -5,7 +5,7 @@ import path from "path";
 import { Preview } from "../../app/components/Preview";
 
 export async function getStaticPaths() {
-  const dataDir = path.join('/tmp', "data", "input");
+  const dataDir = path.join(process.env.DATA_DIR_ROOT, "data", "input");
   if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
 
   const files = fs.readdirSync(dataDir);
@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const filePath = path.join('/tmp', "data", "input", `${params.slug}.json`);
+  const filePath = path.join(process.env.DATA_DIR_ROOT, "data", "input", `${params.slug}.json`);
 
   try {
     const fileContent = fs.readFileSync(filePath, "utf-8");
@@ -29,7 +29,7 @@ export async function getStaticProps({ params }) {
         communityName: data.communityName,
         description: data.description,
         primaryColor: data.primaryColor,
-        imageUrl: data.imageUrl,
+        imageUrl: data.communityLogo,
         communityLinks: JSON.parse(data.communityLinks),
       },
     };
