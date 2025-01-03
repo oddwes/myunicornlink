@@ -267,7 +267,7 @@ export default function Home() {
               description={description}
               primaryColor={primaryColor}
               communityLogo={communityLogo}
-              communityLinks={communityLinks}
+              communityLinks={JSON.stringify(communityLinks)}
             />
           </div>
         </div>

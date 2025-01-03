@@ -13,11 +13,11 @@ export const Preview = ({
   communityLogo,
   communityLinks
 } : {
-  communityName: string,
-  description: string,
+  communityName: string | null,
+  description: string | null,
   primaryColor: string,
   communityLogo: string | null | undefined,
-  communityLinks: CommunityLinksInterface[]
+  communityLinks: string | null
 }) => {
   return (
     <div
@@ -35,7 +35,7 @@ export const Preview = ({
         <p className="text-sm" style={{ color: primaryColor }}>{description}</p>
         <div className="flex justify-center mt-4 space-x-4">
           <div className="grid grid-cols-3 gap-4">
-            {communityLinks.map((link) => (
+            {communityLinks && JSON.parse(communityLinks).map((link) => (
               <a
                 key={link.id}
                 href={link.url}
