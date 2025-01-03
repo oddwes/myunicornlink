@@ -1,4 +1,6 @@
 import puppeteer, { Page } from 'puppeteer';
+import chromium from '@sparticuz/chromium';
+import puppeteerCore from 'puppeteer-core';
 import fs from 'fs';
 import path from 'path';
 import axios from 'axios';
@@ -80,22 +82,24 @@ export const convertReactToHtml = async (slug: string, targetUrl: string) => {
       fs.mkdirSync(downloadDir, { recursive: true });
     }
 
-    // Launch Puppeteer
-    const browser = await puppeteer.launch();
+    let browser
+    if (process.env.NODE_ENV === 'development') {
+      browser = await puppeteer.launch();
+    }
+    if (process.env.NODE_ENV === 'production') {
+      browser = await puppeteerCore.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
+      });
+    }
     const page = await browser.newPage();
-
-    // Navigate to the page
     await page.goto(targetUrl, { waitUntil: 'networkidle0' });
-
-    // Apply inlining and image downloading
     await inlineStyles(page);
     await downloadImages(page, downloadDir);
-
-    // Extract the final HTML content
     const finalHTML = await page.content();
     fs.writeFileSync(path.join(downloadDir, 'index.html'), finalHTML, 'utf-8');
-
-    // Close Puppeteer
     await browser.close();
 
     return downloadDir
