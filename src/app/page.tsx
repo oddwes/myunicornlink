@@ -65,7 +65,7 @@ export default function Home() {
     setUploading(true)
     setCid(null)
 
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append("communityName", communityName.trim());
     if (description) formData.append("description", description);
     if (primaryColor) formData.append("primaryColor", primaryColor);
