@@ -146,7 +146,7 @@ export default function Home() {
       <div className="grid grid-cols-2">
         <div>
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2">Community name</label>
+            <label className="block text-sm font-medium mb-2">Name</label>
             <input
               type="text"
               value={communityName}
@@ -156,7 +156,7 @@ export default function Home() {
           </div>
 
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2">Community description</label>
+            <label className="block text-sm font-medium mb-2">Description</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -259,7 +259,7 @@ export default function Home() {
         <div className="p-8">
           <div className="mb-4 px-4 py-2 bg-gray-100 text-black font-semibold rounded-md flex items-center space-x-2 justify-center">
             <IoMdInformationCircleOutline />
-            <p>Your community real look</p>
+            <p>How your page will look</p>
           </div>
           <div ref={componentRef}>
             <Preview
