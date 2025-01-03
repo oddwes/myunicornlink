@@ -139,7 +139,7 @@ export default function Home() {
             disabled={!communityName || uploading}
             className="flex items-center px-4 py-2 bg-purple-500 text-white text-sm rounded-md hover:bg-purple-600 disabled:bg-gray-300"
           >
-            {uploading ? "Uploading..." : "Save and upload to IPFS"}
+            {uploading ? "Uploading..." : "Upload to IPFS"}
           </button>
         </div>
       </div>
