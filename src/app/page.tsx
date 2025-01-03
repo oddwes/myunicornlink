@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LuPencilLine } from "react-icons/lu";
 import { FiCheck, FiPlus } from "react-icons/fi";
@@ -9,17 +9,16 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { getLinkIcon, prettifyLink } from "./components/Links";
 import { Preview } from "./components/Preview";
 import { CommunityLinksInterface } from "./interfaces/CommunityLinksInterface";
+import Link from "next/link";
 
 export default function Home() {
-  const [communityName, setCommunityName] = useState<string>("Burlin");
-  const [description, setDescription] = useState<string>("Foobullish on the Future of Web3");
+  const componentRef = useRef(null);
+
+  const [communityName, setCommunityName] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
   const [primaryColor, setPrimaryColor] = useState<string>("#3C65E5");
-  const [communityLogo, setCommunityLogo] = useState<string|null>(null);
-  const [communityLinks, setCommunityLinks] = useState<CommunityLinksInterface[]>([
-    { id: 1, url: "https://discord.com/foobar", isEditing: false },
-    { id: 2, url: "https://x.com/foobar", isEditing: false },
-    { id: 3, url: "https://foobar.io", isEditing: false },
-  ]);
+  const [communityLogo, setCommunityLogo] = useState<string|null>();
+  const [communityLinks, setCommunityLinks] = useState<CommunityLinksInterface[]>([]);
   const [uploading, setUploading] = useState<boolean>(false)
   const [cid, setCid] = useState<string|null>(null)
 
@@ -37,6 +36,30 @@ export default function Home() {
       alert('Error uploading image')
     }
   };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setCommunityName(localStorage.getItem('communityName')||'')
+      setDescription(localStorage.getItem('description')||'')
+      setPrimaryColor(localStorage.getItem('primaryColor')||"#3C65E5")
+      setCommunityLogo(localStorage.getItem('communityLogo'))
+      if(localStorage.getItem('communityLinks')) {
+        setCommunityLinks(JSON.parse(localStorage.getItem('communityLinks')||''))
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('communityName', communityName)
+      localStorage.setItem('description', description)
+      localStorage.setItem('primaryColor', primaryColor)
+      if(communityLogo) {
+        localStorage.setItem('communityLogo', communityLogo)
+      }
+      localStorage.setItem('communityLinks', JSON.stringify(communityLinks))
+    }
+  }, [communityName, description, primaryColor, communityLogo, communityLinks])
 
   const handleAddLink = () => {
     setCommunityLinks([...communityLinks, { id: Date.now(), url: "", isEditing: true }]);
@@ -60,26 +83,7 @@ export default function Home() {
     setCommunityLinks(communityLinks.filter((link) => link.id !== id));
   };
 
-  const justSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    const formData = new FormData();
-    formData.append("communityName", communityName.trim());
-    if (description) formData.append("description", description);
-    if (primaryColor) formData.append("primaryColor", primaryColor);
-    if (communityLogo) formData.append("communityLogo", communityLogo);
-    if (communityLinks) formData.append("communityLinks", JSON.stringify(communityLinks));
-    await fetch("/api/save", {
-      method: "POST",
-      body: formData,
-    }).then((response) =>
-      response.json()
-    ).then((res) => {
-      console.log(JSON.stringify(res))
-    })
-  }
-
-  const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
+  const handleSave = async () => {
     setUploading(true)
     setCid(null)
 
@@ -123,13 +127,13 @@ export default function Home() {
               </button>
             </a>
           )}
-          <button
-            onClick={justSave}
-            disabled={!communityName || uploading}
-            className="flex items-center px-4 py-2 bg-purple-500 text-white text-sm rounded-md hover:bg-purple-600 disabled:bg-gray-300"
-          >
-            Save
-          </button>
+          <Link target="_blank" href="/preview" rel="noopener noreferrer">
+            <button
+              className="flex items-center px-4 py-2 bg-purple-500 text-white text-sm rounded-md hover:bg-purple-600 disabled:bg-gray-300"
+            >
+              Preview
+            </button>
+          </Link>
           <button
             onClick={handleSave}
             disabled={!communityName || uploading}
@@ -257,13 +261,15 @@ export default function Home() {
             <IoMdInformationCircleOutline />
             <p>Your community real look</p>
           </div>
-          <Preview
-            communityName={communityName}
-            description={description}
-            primaryColor={primaryColor}
-            communityLogo={communityLogo}
-            communityLinks={communityLinks}
-          />
+          <div ref={componentRef}>
+            <Preview
+              communityName={communityName}
+              description={description}
+              primaryColor={primaryColor}
+              communityLogo={communityLogo}
+              communityLinks={communityLinks}
+            />
+          </div>
         </div>
       </div>
     </div>
