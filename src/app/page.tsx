@@ -72,29 +72,17 @@ export default function Home() {
     if (communityLogo) formData.append("communityLogo", communityLogo);
     if (communityLinks) formData.append("communityLinks", JSON.stringify(communityLinks));
 
-    const response = await fetch("/api/save", {
+    await fetch("/api/generate", {
       method: "POST",
       body: formData,
+    }).then((response) =>
+      response.json()
+    ).then((res) => {
+      setUploading(false)
+      setCid(res.directoryCid)
+    }).catch((error) => {
+      console.error('Failed to save the page', error);
     })
-
-    if(response.ok) {
-      const slug = communityName
-        .replace(/[^a-zA-Z0-9-_]/g, '')
-        .toLowerCase();
-      formData = new FormData()
-      formData.append("slug", slug);
-      fetch("/api/generate", {
-        method: "POST",
-        body: formData,
-      }).then((response) =>
-        response.json()
-      ).then((res) => {
-        setUploading(false)
-        setCid(res.directoryCid)
-      }).catch((error) => {
-        console.error('Failed to save the page', error);
-      })
-    }
   }
 
   return (
