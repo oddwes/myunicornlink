@@ -60,6 +60,24 @@ export default function Home() {
     setCommunityLinks(communityLinks.filter((link) => link.id !== id));
   };
 
+  const justSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    const formData = new FormData();
+    formData.append("communityName", communityName.trim());
+    if (description) formData.append("description", description);
+    if (primaryColor) formData.append("primaryColor", primaryColor);
+    if (communityLogo) formData.append("communityLogo", communityLogo);
+    if (communityLinks) formData.append("communityLinks", JSON.stringify(communityLinks));
+    await fetch("/api/save", {
+      method: "POST",
+      body: formData,
+    }).then((response) =>
+      response.json()
+    ).then((res) => {
+      console.log(JSON.stringify(res))
+    })
+  }
+
   const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setUploading(true)
@@ -105,6 +123,13 @@ export default function Home() {
               </button>
             </a>
           )}
+          <button
+            onClick={justSave}
+            disabled={!communityName || uploading}
+            className="flex items-center px-4 py-2 bg-purple-500 text-white text-sm rounded-md hover:bg-purple-600 disabled:bg-gray-300"
+          >
+            Save
+          </button>
           <button
             onClick={handleSave}
             disabled={!communityName || uploading}
