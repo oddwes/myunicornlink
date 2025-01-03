@@ -105,10 +105,6 @@ export default async function handler(req, res) {
     }
 
     const { fields } = await parseForm(req) as { fields: PageDataProps };
-    console.log('parsed form')
-
-    const { communityName } = fields;
-    console.log(communityName)
 
     let browser
     if (process.env.NODE_ENV === 'development') {
