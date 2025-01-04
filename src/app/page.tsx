@@ -109,7 +109,7 @@ export default function Home() {
     <div
       className="max-w-6xl mx-auto gap-6 p-6 bg-white shadow-md rounded-md"
     >
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center">
         <h2 className="text-xl font-bold">Add your MyUnicornLink details</h2>
         <div className="flex gap-2">
           {cid && (
@@ -141,10 +141,16 @@ export default function Home() {
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-2">
+      <hr className="h-0.5 my-3"/>
+      <p>Upload your profile/logo, it will be visible to all visitors.</p>
+      <div className="grid grid-cols-2 mt-8">
         <div>
+          <p>Community Details</p>
+          <hr
+            className="h-1 border-0 text-gray-100 bg-gray-100 mb-5 rounded-full"
+          />
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2">Name</label>
+            <label className="block text-xs font-medium mb-2">Name</label>
             <input
               type="text"
               value={communityName}
@@ -163,7 +169,7 @@ export default function Home() {
           </div>
 
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2">Primary color</label>
+            <label className="block text-xs font-medium mb-2">Primary color</label>
             <TwitterPicker
               triangle="hide"
               width="100%"
@@ -173,13 +179,13 @@ export default function Home() {
           </div>
 
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2">Community logo</label>
+            <label className="block text-xs font-medium mb-2">Community logo</label>
             {!communityLogo ? (
               <label
                 className="block w-full p-6 text-center border-2 border-dashed rounded-md bg-purple-50 text-purple-700 cursor-pointer hover:bg-purple-100"
               >
                 <span className="block text-lg font-semibold">Choose a file to upload</span>
-                <span className="block text-sm mt-2">JPG or PNG with maximum size of 2MB</span>
+                <span className="block text-xs mt-2">JPG or PNG with maximum size of 2MB</span>
                 <input
                   type="file"
                   accept="image/*"
@@ -205,7 +211,7 @@ export default function Home() {
           </div>
 
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2">Community networks</label>
+            <label className="block text-xs font-medium mb-2">Community networks</label>
             {communityLinks.map((link) => (
               <div
                 key={link.id}
@@ -260,7 +266,7 @@ export default function Home() {
             </button>
           </div>
         </div>
-        <div className="p-8">
+        <div className="px-8">
           <div className="mb-4 px-4 py-2 bg-gray-100 text-black font-semibold rounded-md flex items-center space-x-2 justify-center">
             <IoMdInformationCircleOutline />
             <p>How your page will look</p>
