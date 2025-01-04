@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { getLinkIcon, prettifyLink } from "./Links"
+import { getLinkIcon, getLinkStyle, prettifyLink } from "./Links"
 
 export interface CommunityLinksInterface {
   id: number
@@ -36,24 +36,27 @@ export const Preview = ({
         <div className="text-sm whitespace-break-spaces" style={{ color: primaryColor }}>{description}</div>
         <div className="flex justify-center mt-4">
           <div className="grid grid-cols-1 w-96">
-            {communityLinks && JSON.parse(communityLinks).map((link) => (
-              <Link
-                key={link.id}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600"
-                style={{ color: primaryColor }}
-              >
-                <div
+            {communityLinks && JSON.parse(communityLinks).map((link) => {
+              const buttonStyle = `flex justify-center items-center px-10 py-3 bg-white rounded-lg mb-2 space-x-2 ${getLinkStyle(link.url)}`
+              return (
+                <Link
                   key={link.id}
-                  className="flex justify-center items-center px-10 py-3 bg-white rounded-lg mb-2 space-x-2"
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600"
+                  style={{ color: primaryColor }}
                 >
-                  {getLinkIcon(link.url)}
-                  <p className="text-gray-800 truncate">{prettifyLink(link.url)}</p>
-                </div>
-              </Link>
-            ))}
+                  <div
+                    key={link.id}
+                    className={buttonStyle}
+                  >
+                    {getLinkIcon(link.url)}
+                    <p className="font-semibold truncate">{prettifyLink(link.url)}</p>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </div>
