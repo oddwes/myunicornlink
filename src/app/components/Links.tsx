@@ -1,7 +1,7 @@
 import { IoLogoDiscord } from "react-icons/io5";
 import { FaXTwitter } from "react-icons/fa6";
 import { PiGlobe } from "react-icons/pi";
-import { FaGithub, FaLinkedin, FaTelegramPlane } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaTelegramPlane, FaYoutube } from "react-icons/fa";
 import { SiFarcaster } from "react-icons/si";
 import { HiOutlineMail } from "react-icons/hi";
 import { validate } from "email-validator";
@@ -13,6 +13,7 @@ const urlTitleMapping = [
   { url: "farcaster.com", title: "Farcaster" },
   { url: "t.me", title: "Telegram" },
   { url: "github.com", title: "Github" },
+  { url: "youtube.com", title: "Youtube" },
 ];
 
 const urlIconMapping = [
@@ -22,6 +23,7 @@ const urlIconMapping = [
   { url: "farcaster.com", icon: <SiFarcaster /> },
   { url: "t.me", icon: <FaTelegramPlane /> },
   { url: "github.com", icon: <FaGithub /> },
+  { url: "youtube.com", icon: <FaYoutube /> },
 ];
 
 export const getLinkIcon = (url: string) => {
