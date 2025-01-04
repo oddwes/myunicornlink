@@ -6,7 +6,7 @@ import { LuPencilLine } from "react-icons/lu";
 import { FiCheck, FiPlus } from "react-icons/fi";
 import { TwitterPicker } from "react-color";
 import { IoMdInformationCircleOutline } from "react-icons/io";
-import { getLinkIcon, prettifyLink } from "./components/Links";
+import { getLinkIcon } from "./components/Links";
 import { Preview } from "./components/Preview";
 import { CommunityLinksInterface } from "./interfaces/CommunityLinksInterface";
 import Link from "next/link";
