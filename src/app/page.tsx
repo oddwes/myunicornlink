@@ -11,6 +11,7 @@ import { Preview } from "./components/Preview";
 import { CommunityLinksInterface } from "./interfaces/CommunityLinksInterface";
 import Link from "next/link";
 import { IoCheckmark } from "react-icons/io5";
+import { Label } from "./components/Label";
 
 export default function Home() {
   const [communityName, setCommunityName] = useState<string>('');
@@ -151,12 +152,12 @@ export default function Home() {
       <p>Upload your profile/logo, it will be visible to all visitors.</p>
       <div className="grid grid-cols-2 mt-8">
         <div>
-          <p>Community Details</p>
+          <label className="block text-md text-gray-500 font-bold mb-1">Community Details</label>
           <hr
             className="h-1 border-0 text-gray-100 bg-gray-100 mb-5 rounded-full"
           />
           <div className="mb-6">
-            <label className="block text-xs font-medium mb-2">Name</label>
+            <Label label="Name" />
             <input
               type="text"
               value={communityName}
@@ -166,7 +167,7 @@ export default function Home() {
           </div>
 
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2">Description</label>
+            <Label label="Description" />
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -175,7 +176,7 @@ export default function Home() {
           </div>
 
           <div className="mb-6">
-            <label className="block text-xs font-medium mb-2">Primary color</label>
+            <Label label="Primary Color" />
             <TwitterPicker
               triangle="hide"
               width="100%"
@@ -185,7 +186,7 @@ export default function Home() {
           </div>
 
           <div className="mb-6">
-            <label className="block text-xs font-medium mb-2">Community logo</label>
+            <Label label="Community Logo" />
             {!communityLogo ? (
               <label
                 className="block w-full p-6 text-center border-2 border-dashed rounded-md bg-purple-50 text-purple-700 cursor-pointer hover:bg-purple-100"
@@ -217,7 +218,7 @@ export default function Home() {
           </div>
 
           <div className="mb-6">
-            <label className="block text-xs font-medium mb-2">Community networks</label>
+            <Label label="Community Networks" />
             {communityLinks.map((link) => (
               <div
                 key={link.id}
