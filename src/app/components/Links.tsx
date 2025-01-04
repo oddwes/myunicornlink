@@ -1,10 +1,10 @@
+import { validate } from "email-validator";
 import { IoLogoDiscord } from "react-icons/io5";
 import { FaXTwitter } from "react-icons/fa6";
 import { PiGlobe } from "react-icons/pi";
 import { FaGithub, FaLinkedin, FaTelegramPlane, FaYoutube } from "react-icons/fa";
 import { SiFarcaster } from "react-icons/si";
-import { HiOutlineMail } from "react-icons/hi";
-import { validate } from "email-validator";
+import { MdEmail } from "react-icons/md";
 
 const urlTitleMapping = [
   { url: "discord.com", title: "Discord" },
@@ -30,7 +30,7 @@ export const getLinkIcon = (url: string) => {
   let icon = <PiGlobe />;
 
   if(validate(url)) {
-    icon = <HiOutlineMail />
+    icon = <MdEmail />
   } else {
     for (const mapping of urlIconMapping) {
       if (url.includes(mapping.url)) {
