@@ -47,10 +47,10 @@ export const Preview = ({
               >
                 <div
                   key={link.id}
-                  className="flex items-center px-10 py-3 bg-white rounded-lg mb-2 space-x-3"
+                  className="flex justify-center items-center px-10 py-3 bg-white rounded-lg mb-2 space-x-2"
                 >
                   {getLinkIcon(link.url)}
-                  <p className="text-gray-800 w-full truncate">{prettifyLink(link.url)}</p>
+                  <p className="text-gray-800 truncate">{prettifyLink(link.url)}</p>
                 </div>
               </Link>
             ))}
