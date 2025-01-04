@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { getLinkIcon, prettifyLink } from "./Links"
 
 export interface CommunityLinksInterface {
@@ -21,7 +22,7 @@ export const Preview = ({
 }) => {
   return (
     <div
-      className="p-4 bg-gray-100 rounded-md h-max"
+      className="p-4 bg-gray-100 rounded-md h-dvh"
     >
       <div className="text-center">
         {communityLogo && (
@@ -32,11 +33,11 @@ export const Preview = ({
           />
         )}
         <h1 className="text-2xl font-bold mt-2" style={{ color: primaryColor }}>{communityName}</h1>
-        <p className="text-sm" style={{ color: primaryColor }}>{description}</p>
-        <div className="flex justify-center mt-4 space-x-4">
-          <div className="grid grid-cols-3 gap-4">
+        <div className="text-sm whitespace-break-spaces" style={{ color: primaryColor }}>{description}</div>
+        <div className="flex justify-center mt-4">
+          <div className="grid grid-cols-1">
             {communityLinks && JSON.parse(communityLinks).map((link) => (
-              <a
+              <Link
                 key={link.id}
                 href={link.url}
                 target="_blank"
@@ -46,12 +47,12 @@ export const Preview = ({
               >
                 <div
                   key={link.id}
-                  className="flex items-center p-3 bg-white rounded-lg mb-2 space-x-2 "
+                  className="flex items-center px-10 py-3 bg-white rounded-lg mb-2 space-x-3"
                 >
                   {getLinkIcon(link.url)}
                   <p className="text-gray-800 w-full truncate">{prettifyLink(link.url)}</p>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </div>

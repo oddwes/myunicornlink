@@ -3,9 +3,17 @@ import { FaXTwitter } from "react-icons/fa6";
 import { PiGlobe } from "react-icons/pi";
 import { FaGithub, FaLinkedin, FaTelegramPlane } from "react-icons/fa";
 import { SiFarcaster } from "react-icons/si";
-import { parse } from "urlite";
 import { HiOutlineMail } from "react-icons/hi";
 import { validate } from "email-validator";
+
+const urlTitleMapping = [
+  { url: "discord.com", title: "Discord" },
+  { url: "x.com", title: "X" },
+  { url: "linkedin.com", title: "LinkedIn" },
+  { url: "farcaster.com", title: "Farcaster" },
+  { url: "t.me", title: "Telegram" },
+  { url: "github.com", title: "Github" },
+];
 
 const urlIconMapping = [
   { url: "discord.com", icon: <IoLogoDiscord /> },
@@ -34,5 +42,12 @@ export const getLinkIcon = (url: string) => {
 };
 
 export const prettifyLink = (url: string) => {
-  return parse(url)?.hostname?.replace("www.", "") || url
+  let title = url
+  for (const mapping of urlTitleMapping) {
+    if (url.includes(mapping.url)) {
+      title = mapping.title;
+      break;
+    }
+  }
+  return title
 }

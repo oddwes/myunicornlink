@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LuPencilLine } from "react-icons/lu";
 import { FiCheck, FiPlus } from "react-icons/fi";
@@ -12,8 +12,6 @@ import { CommunityLinksInterface } from "./interfaces/CommunityLinksInterface";
 import Link from "next/link";
 
 export default function Home() {
-  const componentRef = useRef(null);
-
   const [communityName, setCommunityName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [primaryColor, setPrimaryColor] = useState<string>("#3C65E5");
@@ -159,7 +157,10 @@ export default function Home() {
             <label className="block text-sm font-medium mb-2">Description</label>
             <textarea
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(e) => {
+                setDescription(e.target.value)
+                console.log(e.target.value)
+              }}
               className="w-full p-2 border rounded-md"
             />
           </div>
@@ -210,23 +211,28 @@ export default function Home() {
             {communityLinks.map((link) => (
               <div
                 key={link.id}
-                className="flex items-center justify-between p-3 bg-gray-100 rounded-lg mb-2"
+                className="flex justify-between p-3 bg-gray-100 rounded-lg mb-2"
               >
-                <div className="flex items-center space-x-2 flex-grow">
-                  <div className="p-2 bg-white rounded-lg hover:bg-gray-100">
-                    {getLinkIcon(link.url)}
-                  </div>
-                  {link.isEditing ? (
+                {link.isEditing ? (
+                  <div className="flex items-center space-x-2 w-full">
+                    <div className="p-2 bg-white rounded-lg hover:bg-gray-100">
+                      {getLinkIcon(link.url)}
+                    </div>
                     <input
                       type="url"
                       value={link.url}
                       onChange={(e) => handleUpdateLink(link.id, e.target.value)}
-                      className="flex-grow p-2 border rounded-md bg-white"
+                      className="w-full p-2 border rounded-md bg-white"
                     />
-                  ) : (
-                    <p className="text-gray-800">{prettifyLink(link.url)}</p>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center space-x-2 truncate">
+                    <div className="p-2 bg-white rounded-lg hover:bg-gray-100">
+                      {getLinkIcon(link.url)}
+                    </div>
+                    <p className="text-gray-800 truncate">{prettifyLink(link.url)}</p>
+                  </div>
+                )}
                 <div className="flex items-center space-x-2">
                   <button
                     className="p-2 bg-white rounded-lg hover:bg-gray-100"
@@ -261,15 +267,13 @@ export default function Home() {
             <IoMdInformationCircleOutline />
             <p>How your page will look</p>
           </div>
-          <div ref={componentRef}>
-            <Preview
-              communityName={communityName}
-              description={description}
-              primaryColor={primaryColor}
-              communityLogo={communityLogo}
-              communityLinks={JSON.stringify(communityLinks)}
-            />
-          </div>
+          <Preview
+            communityName={communityName}
+            description={description}
+            primaryColor={primaryColor}
+            communityLogo={communityLogo}
+            communityLinks={JSON.stringify(communityLinks)}
+          />
         </div>
       </div>
     </div>
