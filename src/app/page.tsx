@@ -166,6 +166,7 @@ export default function Home() {
             <label className="block text-sm font-medium mb-2">Primary color</label>
             <TwitterPicker
               triangle="hide"
+              width="100%"
               color={primaryColor}
               onChangeComplete={(color) => setPrimaryColor(color.hex)}
             />
