@@ -35,7 +35,7 @@ export const Preview = ({
         <h1 className="text-2xl font-bold mt-2" style={{ color: primaryColor }}>{communityName}</h1>
         <div className="text-sm whitespace-break-spaces" style={{ color: primaryColor }}>{description}</div>
         <div className="flex justify-center mt-4">
-          <div className="grid grid-cols-1">
+          <div className="grid grid-cols-1 w-96">
             {communityLinks && JSON.parse(communityLinks).map((link) => (
               <Link
                 key={link.id}
