@@ -10,6 +10,7 @@ import { getLinkIcon, prettifyLink } from "./components/Links";
 import { Preview } from "./components/Preview";
 import { CommunityLinksInterface } from "./interfaces/CommunityLinksInterface";
 import Link from "next/link";
+import { IoCheckmark } from "react-icons/io5";
 
 export default function Home() {
   const [communityName, setCommunityName] = useState<string>('');
@@ -137,7 +138,12 @@ export default function Home() {
             disabled={!communityName || uploading}
             className="flex items-center px-4 py-2 bg-purple-500 text-white text-sm rounded-md hover:bg-purple-600 disabled:bg-gray-300"
           >
-            {uploading ? "Uploading..." : "Upload to IPFS"}
+            {uploading ? "Uploading..." : (
+              <div className="flex items-center">
+                <p className="pr-2">Upload to IPFS</p>
+                <IoCheckmark />
+              </div>
+            )}
           </button>
         </div>
       </div>
