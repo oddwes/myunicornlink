@@ -8,7 +8,7 @@ import { MdEmail } from "react-icons/md";
 
 const urlDataMapping = [
   { url: "discord.com", icon: <IoLogoDiscord />, title: "Discord", style: "button-discord" },
-  { url: "x.com", icon: <FaXTwitter />, title: "X", style: "button-x" },
+  { url: "x.com", icon: <FaXTwitter />, title: "Twitter", style: "button-x" },
   { url: "linkedin.com", icon: <FaLinkedin />, title: "Linkedin", style: "button-discord" },
   { url: "farcaster.com", icon: <SiFarcaster />, title: "Farcaster", style: "button-farcaster" },
   { url: "t.me", icon: <FaTelegramPlane />, title: "Telegram", style: "button-telegram" },

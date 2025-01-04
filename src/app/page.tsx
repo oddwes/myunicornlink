@@ -157,10 +157,7 @@ export default function Home() {
             <label className="block text-sm font-medium mb-2">Description</label>
             <textarea
               value={description}
-              onChange={(e) => {
-                setDescription(e.target.value)
-                console.log(e.target.value)
-              }}
+              onChange={(e) => setDescription(e.target.value)}
               className="w-full p-2 border rounded-md"
             />
           </div>
@@ -230,7 +227,7 @@ export default function Home() {
                     <div className="p-2 bg-white rounded-lg hover:bg-gray-100">
                       {getLinkIcon(link.url)}
                     </div>
-                    <p className="text-gray-800 truncate">{prettifyLink(link.url)}</p>
+                    <p className="text-gray-800 truncate">{link.url}</p>
                   </div>
                 )}
                 <div className="flex items-center space-x-2">
