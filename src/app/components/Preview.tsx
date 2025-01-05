@@ -6,7 +6,7 @@ interface PreviewProps {
   communityName: string | null
   description: string  | null
   primaryColor: string
-  communityLogo: string | null
+  communityLogo: string
   communityLinks: string[]
 };
 

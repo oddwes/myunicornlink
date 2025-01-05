@@ -285,7 +285,7 @@ export default function Home() {
             communityName={communityName}
             description={description}
             primaryColor={primaryColor}
-            communityLogo={communityLogo}
+            communityLogo={communityLogo || ""}
             communityLinks={communityLinks.map((link) => link.url)}
           />
         </div>
