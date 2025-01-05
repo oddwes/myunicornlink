@@ -2,11 +2,13 @@ import Link from "next/link"
 import { getLinkIcon, getLinkStyle, prettifyLink } from "./Links"
 import normalizeUrl from "normalize-url"
 
-export interface CommunityLinksInterface {
-  id: number
-  url: string
-  isEditing: boolean
-}
+interface PreviewProps {
+  communityName: string | null
+  description: string  | null
+  primaryColor: string
+  communityLogo: string | null
+  communityLinks: string[]
+};
 
 export const Preview = ({
   communityName,
@@ -14,13 +16,7 @@ export const Preview = ({
   primaryColor,
   communityLogo,
   communityLinks
-} : {
-  communityName: string | null,
-  description: string | null,
-  primaryColor: string,
-  communityLogo: string | null | undefined,
-  communityLinks: string | null
-}) => {
+} : PreviewProps ) => {
   return (
     <div
       className="p-4 bg-gray-100 rounded-md h-dvh"
@@ -37,28 +33,28 @@ export const Preview = ({
         <div className="text-sm whitespace-break-spaces" style={{ color: primaryColor }}>{description}</div>
         <div className="flex justify-center mt-4">
           <div className="grid grid-cols-1 w-96">
-            {communityLinks && JSON.parse(communityLinks).map((link) => {
+            {communityLinks.map((link: string) => {
               let urlHref: string
               try {
-                urlHref = normalizeUrl(link.url)
+                urlHref = normalizeUrl(link)
               } catch {
-                urlHref = link.url
+                urlHref = link
               }
 
-              const buttonStyle = `flex justify-center items-center px-10 py-3 bg-white rounded-lg mb-2 space-x-2 ${getLinkStyle(link.url)}`
+              const buttonStyle = `flex justify-center items-center px-10 py-3 bg-white rounded-lg mb-2 space-x-2 ${getLinkStyle(link)}`
               return (
                 <Link
-                  key={link.id}
+                  key={link}
                   href={urlHref}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <div
-                    key={link.id}
+                    key={link}
                     className={buttonStyle}
                   >
-                    {getLinkIcon(link.url)}
-                    <p className="font-semibold truncate">{prettifyLink(link.url)}</p>
+                    {getLinkIcon(link)}
+                    <p className="font-semibold truncate">{prettifyLink(link)}</p>
                   </div>
                 </Link>
               )

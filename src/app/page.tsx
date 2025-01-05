@@ -44,7 +44,8 @@ export default function Home() {
       setPrimaryColor(localStorage.getItem('primaryColor')||"#3C65E5")
       setCommunityLogo(localStorage.getItem('communityLogo'))
       if(localStorage.getItem('communityLinks')) {
-        setCommunityLinks(JSON.parse(localStorage.getItem('communityLinks')||''))
+        const exisitingLinks = JSON.parse(localStorage.getItem('communityLinks') || '[]')
+        setCommunityLinks(exisitingLinks.map((existingLink: CommunityLinksInterface) => ({ url: existingLink, isEditing: false })))
       }
     }
   }, [])
@@ -57,30 +58,30 @@ export default function Home() {
       if(communityLogo) {
         localStorage.setItem('communityLogo', communityLogo)
       }
-      localStorage.setItem('communityLinks', JSON.stringify(communityLinks))
+      localStorage.setItem('communityLinks', JSON.stringify(communityLinks.map((link) => link.url)))
     }
   }, [communityName, description, primaryColor, communityLogo, communityLinks])
 
   const handleAddLink = () => {
-    setCommunityLinks([...communityLinks, { id: Date.now(), url: "", isEditing: true }]);
+    setCommunityLinks([...communityLinks, { url: "", isEditing: true }]);
   };
 
-  const handleUpdateLink = (id: number, newUrl: string) => {
+  const handleUpdateLink = (oldUrl: string, newUrl: string) => {
     setCommunityLinks(
-      communityLinks.map((link) => (link.id === id ? { ...link, url: newUrl } : link))
+      communityLinks.map((link) => (link.url === oldUrl ? { ...link, url: newUrl } : link))
     );
   };
 
-  const toggleEditMode = (id: number) => {
+  const toggleEditMode = (url: string) => {
     setCommunityLinks(
       communityLinks.map((link) =>
-        link.id === id ? { ...link, isEditing: !link.isEditing } : link
+        link.url === url ? { ...link, isEditing: !link.isEditing } : link
       )
     );
   };
 
-  const handleDeleteLink = (id: number) => {
-    setCommunityLinks(communityLinks.filter((link) => link.id !== id));
+  const handleDeleteLink = (url: string) => {
+    setCommunityLinks(communityLinks.filter((link) => link.url !== url));
   };
 
   const handleSave = async () => {
@@ -92,7 +93,7 @@ export default function Home() {
     if (description) formData.append("description", description);
     if (primaryColor) formData.append("primaryColor", primaryColor);
     if (communityLogo) formData.append("communityLogo", communityLogo);
-    if (communityLinks) formData.append("communityLinks", JSON.stringify(communityLinks));
+    if (communityLinks) formData.append("communityLinks", JSON.stringify(communityLinks.map((link) => link.url)));
 
     await fetch("/api/generate", {
       method: "POST",
@@ -221,7 +222,7 @@ export default function Home() {
             <Label label="Community Networks" />
             {communityLinks.map((link) => (
               <div
-                key={link.id}
+                key={communityLinks.indexOf(link)}
                 className="flex justify-between p-3 bg-gray-100 rounded-lg mb-2"
               >
                 {link.isEditing ? (
@@ -232,7 +233,9 @@ export default function Home() {
                     <input
                       type="url"
                       value={link.url}
-                      onChange={(e) => handleUpdateLink(link.id, e.target.value)}
+                      onChange={(e) => {
+                        handleUpdateLink(link.url, e.target.value)
+                      }}
                       className="w-full p-2 border rounded-md bg-white"
                     />
                   </div>
@@ -247,7 +250,7 @@ export default function Home() {
                 <div className="flex items-center space-x-2">
                   <button
                     className="p-2 bg-white rounded-lg hover:bg-gray-100"
-                    onClick={() => toggleEditMode(link.id)}
+                    onClick={() => toggleEditMode(link.url)}
                   >
                     {link.isEditing ? (
                       <FiCheck className="w-5 h-5 text-gray-600" />
@@ -257,7 +260,7 @@ export default function Home() {
                   </button>
                   <button
                     className="p-2 bg-white rounded-lg hover:bg-gray-100"
-                    onClick={() => handleDeleteLink(link.id)}
+                    onClick={() => handleDeleteLink(link.url)}
                   >
                     <FaRegTrashAlt className="w-5 h-5 text-gray-600" />
                   </button>
@@ -283,7 +286,7 @@ export default function Home() {
             description={description}
             primaryColor={primaryColor}
             communityLogo={communityLogo}
-            communityLinks={JSON.stringify(communityLinks)}
+            communityLinks={communityLinks.map((link) => link.url)}
           />
         </div>
       </div>

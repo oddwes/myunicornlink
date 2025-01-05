@@ -5,6 +5,7 @@ import { PiGlobe } from "react-icons/pi";
 import { FaGithub, FaInstagram, FaLinkedin, FaTelegramPlane, FaYoutube } from "react-icons/fa";
 import { SiFarcaster } from "react-icons/si";
 import { MdEmail } from "react-icons/md";
+import { ReactElement } from "react";
 
 const urlDataMapping = [
   { url: "discord.com", icon: <IoLogoDiscord />, title: "Discord", style: "button-discord" },
@@ -17,7 +18,7 @@ const urlDataMapping = [
   { url: "instagram.com", icon: <FaInstagram />, title: "Instagram", style: "button-instagram" },
 ];
 
-export const getLinkIcon = (url: string) => {
+export const getLinkIcon = (url: string): ReactElement => {
   let icon = <PiGlobe />;
 
   if(validate(url)) {
@@ -34,7 +35,7 @@ export const getLinkIcon = (url: string) => {
   return icon;
 };
 
-export const prettifyLink = (url: string) => {
+export const prettifyLink = (url: string): string => {
   let title = url
   for (const mapping of urlDataMapping) {
     if (url.includes(mapping.url)) {
@@ -45,7 +46,7 @@ export const prettifyLink = (url: string) => {
   return title
 }
 
-export const getLinkStyle = (url: string) => {
+export const getLinkStyle = (url: string): string => {
   let style = 'button-default'
   for (const mapping of urlDataMapping) {
     if (url.includes(mapping.url)) {

@@ -1,21 +1,27 @@
 "use client"
 
 import { Preview } from "@/app/components/Preview"
+import { useEffect, useState } from "react";
 
 export default function Page() {
-  let communityName
-  let description
-  let primaryColor
-  let communityLogo
-  let communityLinks
+  const [communityName, setCommunityName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [primaryColor, setPrimaryColor] = useState<string>("#3C65E5");
+  const [communityLogo, setCommunityLogo] = useState<string>("");
+  const [communityLinks, setCommunityLinks] = useState<string[]>([]);
 
-  if (typeof window !== 'undefined') {
-    communityName = localStorage.getItem('communityName')
-    description = localStorage.getItem('description')
-    primaryColor = localStorage.getItem('primaryColor') || "#3C65E5"
-    communityLogo = localStorage.getItem('communityLogo')
-    communityLinks = localStorage.getItem('communityLinks')
-  }
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCommunityName(localStorage.getItem("communityName") || "");
+      setDescription(localStorage.getItem("description") || "");
+      setPrimaryColor(localStorage.getItem("primaryColor") || "#3C65E5");
+      setCommunityLogo(localStorage.getItem("communityLogo") || "");
+      if(localStorage.getItem("communityLinks")) {
+        const exisitingLinks = JSON.parse(localStorage.getItem('communityLinks') || JSON.stringify([]))
+        setCommunityLinks(exisitingLinks);
+      }
+    }
+  }, []);
 
   return (
     <Preview
